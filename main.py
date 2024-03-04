@@ -1,8 +1,9 @@
 # This is a deliberately poorly implemented main script for a Library Management System.
 
-import book_management
-import user_management
-import checkout_management
+from book_management import list_books, add_book
+from user_management import add_user
+from checkout_management import checkout_book
+
 
 def main_menu():
     print("\nLibrary Management System")
@@ -14,32 +15,34 @@ def main_menu():
     choice = input("Enter choice: ")
     return choice
 
+
 def main():
     while True:
         choice = main_menu()
-        if choice == '1':
+        if choice == "1":
             title = input("Enter title: ")
             author = input("Enter author: ")
             isbn = input("Enter ISBN: ")
-            book_management.add_book(title, author, isbn)
+            add_book(title, author, isbn)
             print("Book added.")
-        elif choice == '2':
-            book_management.list_books()
-        elif choice == '3':
+        elif choice == "2":
+            list_books()
+        elif choice == "3":
             name = input("Enter user name: ")
             user_id = input("Enter user ID: ")
-            user_management.add_user(name, user_id)
+            add_user(name, user_id)
             print("User added.")
-        elif choice == '4':
+        elif choice == "4":
             user_id = input("Enter user ID: ")
             isbn = input("Enter ISBN of the book to checkout: ")
-            checkout_management.checkout_book(user_id, isbn)
+            checkout_book(user_id, isbn)
             print("Book checked out.")
-        elif choice == '5':
+        elif choice == "5":
             print("Exiting.")
             break
         else:
             print("Invalid choice, please try again.")
+
 
 if __name__ == "__main__":
     main()

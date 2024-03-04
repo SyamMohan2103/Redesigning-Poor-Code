@@ -1,7 +1,6 @@
 # This is a deliberately poorly implemented main script for a Library Management System.
 
-from book_management import list_books, add_book
-from user_management import add_user
+from storage import Storage
 from checkout_management import checkout_book
 
 
@@ -17,20 +16,21 @@ def main_menu():
 
 
 def main():
+    st = Storage()
     while True:
         choice = main_menu()
         if choice == "1":
             title = input("Enter title: ")
             author = input("Enter author: ")
             isbn = input("Enter ISBN: ")
-            add_book(title, author, isbn)
+            st.add_book(title, author, isbn)
             print("Book added.")
         elif choice == "2":
-            list_books()
+            st.list_books()
         elif choice == "3":
             name = input("Enter user name: ")
             user_id = input("Enter user ID: ")
-            add_user(name, user_id)
+            st.add_user(name, user_id)
             print("User added.")
         elif choice == "4":
             user_id = input("Enter user ID: ")

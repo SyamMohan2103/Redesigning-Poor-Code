@@ -5,6 +5,13 @@ from checkout import Checkout
 
 class BookNFException(Exception):
     """Exception raised when the Book ISBN is not found."""
+
+    pass
+
+
+class UserNFException(Exception):
+    """Exception raised when the User ID is not found."""
+
     pass
 
 
@@ -17,9 +24,9 @@ class Storage:
 
     def store_books_from_csv(self, csv_filename):
         """
-            Method to store the books details from a csv file.
-            Input : String - csv filename or path
-            Output : Stores the csv file data into books list
+        Method to store the books details from a csv file.
+        Input : String - csv filename or path
+        Output : Stores the csv file data into books list
         """
         try:
             with open(csv_filename, "r") as file:
@@ -44,7 +51,7 @@ class Storage:
 
     def list_books(self):
         """
-            Method to display all the books.
+        Method to display all the books.
         """
         format_row_books = "{:^35}|" * (3)
         print(format_row_books.format(*[i for i in ["Title", "Author", "ISBN"]]))
@@ -54,9 +61,9 @@ class Storage:
 
     def store_users_from_csv(self, csv_filename):
         """
-            Method to store the user details from a csv file.
-            Input : String - csv filename or path
-            Output : Stores the csv file data into users list
+        Method to store the user details from a csv file.
+        Input : String - csv filename or path
+        Output : Stores the csv file data into users list
         """
         try:
             with open(csv_filename, "r") as file:
@@ -80,7 +87,7 @@ class Storage:
 
     def list_users(self):
         """
-            Method to display all the users.
+        Method to display all the users.
         """
         format_row_users = "{:^35}|" * (2)
         print(format_row_users.format(*[i for i in ["Name", "User ID"]]))
@@ -89,11 +96,12 @@ class Storage:
             print(format_row_users.format(*[i for i in user.get_details()]))
 
     def check_user(self, user_id):
-        if user_id in self.users:
-            print("User Exists")
-        else:
-            print("User does not exist. Please enter correct User ID.")
-
+        try:
+            for user in self.users:
+                if user_id == user.user_id:
+                    return True
+        except UserNFException:
+            print("User does not exist. Please enter correct user ID.")
 
     def check_book(self, isbn):
         try:
@@ -105,36 +113,37 @@ class Storage:
 
     def checkout_book(self, user_id, isbn):
         """
-            Method to add information related to checkouts to a list
-            Params: 
-                user_id: user id of the person taking the book
-                isbn: isbn of the book being checked out
-            Return: None
+        Method to add information related to checkouts to a list
+        Params:
+            user_id: user id of the person taking the book
+            isbn: isbn of the book being checked out
+        Return: None
         """
-        book_exists = 
+        book_exists = self.check_book(isbn)
+        user_exists = self.check_user(user_id)
         if book_exists and user_exists:
-            self.checkouts.append(
-                Checkout(user_id, isbn)
-            )
+            self.checkouts.append(Checkout(user_id, isbn))
             print("Checkout added.")
         else:
-            print("User and book does not present in the library")
+            print("User or book does not present in the library. Checkout Failed!!!")
 
     def list_checkouts(self):
         """
-            Method to display all the books that are checked out.
+        Method to display all the books that are checked out.
         """
         format_row_checkouts = "{:^35}|" * (3)
-        print(format_row_checkouts.format(*[i for i in ["User ID", "ISBN", "Checkout Time"]]))
+        print(
+            format_row_checkouts.format(
+                *[i for i in ["User ID", "ISBN", "Checkout Time"]]
+            )
+        )
         print(format_row_checkouts.format(*[i for i in ["-" * 10, "-" * 10, "-" * 10]]))
         for checkout in self.checkouts:
             print(format_row_checkouts.format(*[i for i in checkout.get_details()]))
 
-    
 
-
-if __name__ == "__main__":
-    st = Storage()
-    st.store_books_from_csv("test_books.csv")
-    st.list_books()
-    st.check_book("978-0201896831")
+# if __name__ == "__main__":
+#     st = Storage()
+#     st.store_books_from_csv("test_books.csv")
+#     st.list_books()
+#     st.check_book("978-0201896831")

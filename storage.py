@@ -4,14 +4,16 @@ from checkout import Checkout
 
 
 class BookNFException(Exception):
-    """Exception raised when the Book ISBN is not found."""
-
+    """
+        Exception raised when the Book ISBN is not found.
+    """
     pass
 
 
 class UserNFException(Exception):
-    """Exception raised when the User ID is not found."""
-
+    """
+        Exception raised when the User ID is not found.
+    """
     pass
 
 
